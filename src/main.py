@@ -1,4 +1,10 @@
+import numpy
+import PIL
 
+from dataset import *
 
 def main():
-    print("Test")
+    print("Program started")
+    dataset = DataSet()
+
+    print("Program exited")
