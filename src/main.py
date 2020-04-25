@@ -7,6 +7,7 @@ def main():
     print("Program started")
     dataset = DataSet()
 
-    test = dataset.get_training_image_array(1)
+    test_image = dataset.get_training_image_array(2)
+    test_label = dataset.get_training_image_label(2)
 
     print("Program exited")
