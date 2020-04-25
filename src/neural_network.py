@@ -56,7 +56,6 @@ class NeuralNetwork:
 
     def train(self, cases: List[Tuple[np.array, np.array]], training_rate: float, trials: int):
         """Perform backpropagation on the given cases"""
-        
         total_num = trials * len(cases)
         speak = 0.1
         done = 0
