@@ -23,9 +23,9 @@ class NeuralNetwork:
         self._size = size
         self._activation_function = activation_function
         for i in range(len(size) - 1):
-            self._layers.append((np.random.rand(size[i + 1], size[i]) - 0.5) / 2)
+            self._layers.append((np.random.rand(size[i + 1], size[i]) - 0.5) / 10000)
         
-    def forward_propagate(self, inp):
+    def forward_propagate(self, inp: np.array):
         """Calculate expected output from given input"""
         current = inp
         self._sum[0] = inp
@@ -41,7 +41,7 @@ class NeuralNetwork:
         """Returns the size of the NN"""
         return self._size
 
-    def _backpropagate(self, err, training_rate):
+    def _backpropagate(self, err: np.array, training_rate: float):
         """performs backprogation given a error"""
         pcurr = err
         for i in range(len(self._activation) - 1, 0, -1):
@@ -54,8 +54,12 @@ class NeuralNetwork:
             self._layers[i - 1] = self._layers[i - 1] - training_rate * p_times_derivative @ self._activation[i - 1].transpose()
             pcurr = pnext
 
-    def train(self, cases: List[Tuple[np.array, np.array]], training_rate, trials):
+    def train(self, cases: List[Tuple[np.array, np.array]], training_rate: float, trials: int):
         """Perform backpropagation on the given cases"""
+        
+        total_num = trials * len(cases)
+        speak = 0.1
+        done = 0
         for _j in range(trials):
             random.shuffle(cases)
             cost_sum = 0
@@ -66,5 +70,21 @@ class NeuralNetwork:
                 error = self._activation[-1] - out
                 cost_sum += sum(error * error)
                 self._backpropagate(error, training_rate)
+                done += 1
+                if done / total_num >= speak:
+                    print("Done ", done, " out of ", total_num)
+                    speak += 0.1
         print("Total error: ", cost_sum)
-        print("Average error: ", cost_sum / len(cases))
+        print("Average error: ", cost_sum / total_num)
+
+def test():
+    cases = [([0, 0], [0]), ([0, 1], [1]), ([1, 0], [1]), ([1, 1], [0])]
+    for i in range(len(cases)):
+        cases[i] = (np.array(cases[i][0]).reshape(2, 1), np.array(cases[i][1]).reshape(1, 1))
+
+    nn = NeuralNetwork([2, 784, 1])
+    nn.train(cases, 0.1, 100000)
+
+
+if __name__ == "__main__":
+    test()
