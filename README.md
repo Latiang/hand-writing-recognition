@@ -3,3 +3,5 @@ This project aims to implement a machine learning system from scratch (with the 
 
 ## Dependencies (Python 3):  
 **Numpy** - for fast Python arrays and math `pip3 install numpy`  
+**Pillow** - Image handling and display `pip3 install numpy`  
+

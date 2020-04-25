@@ -13,7 +13,7 @@ class DataSet():
         return numpy.fromfile("assets/"+path, dtype='B')
 
     def get_training_image_array(self, image_count : int):
-        image_start = 8 + image_count * IMAGE_WIDTH*IMAGE_WIDTH
+        image_start = 16 + image_count * IMAGE_WIDTH*IMAGE_WIDTH
         image_end = image_start + IMAGE_WIDTH*IMAGE_WIDTH
         return self.training_data[image_start:image_end]
 
@@ -22,7 +22,7 @@ class DataSet():
         return int(self.training_data_labels[index])
 
     def get_test_image_array(self, image_count : int):
-        image_start = 8 + image_count * IMAGE_WIDTH*IMAGE_WIDTH
+        image_start = 16 + image_count * IMAGE_WIDTH*IMAGE_WIDTH
         image_end = image_start + IMAGE_WIDTH*IMAGE_WIDTH
         return self.test_data[image_start:image_end]
 
