@@ -68,14 +68,3 @@ class NeuralNetwork:
                 self._backpropagate(error, training_rate)
         print("Total error: ", cost_sum)
         print("Average error: ", cost_sum / len(cases))
-
-
-
-    
-
-cases = [([0, 0], [0]), ([0, 1], [1]), ([1, 0], [1]), ([1, 1], [0])]
-for i in range(len(cases)):
-    cases[i] = (np.array(cases[i][0]).reshape(2, 1), np.array(cases[i][1]).reshape(1, 1))
-
-nn = NeuralNetwork([2, 10, 1])
-nn.train(cases, 0.1, 100000)
