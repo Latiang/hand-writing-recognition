@@ -20,3 +20,12 @@ class DataSet():
     def get_training_image_label(self, image_count):
         index = 8 + image_count
         return int(self.training_data_labels[index])
+
+    def get_test_image_array(self, image_count : int):
+        image_start = 8 + image_count * IMAGE_WIDTH*IMAGE_WIDTH
+        image_end = image_start + IMAGE_WIDTH*IMAGE_WIDTH
+        return self.test_data[image_start:image_end]
+
+    def get_test_image_label(self, image_count):
+        index = 8 + image_count
+        return int(self.test_data_labels[index])
