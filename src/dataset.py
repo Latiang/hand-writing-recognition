@@ -1,5 +1,7 @@
 import numpy
 
+IMAGE_WIDTH = 28
+
 class DataSet():
     def __init__(self):
         self.training_data = self.load_numpy_array_from_file("train-images.idx3-ubyte")
@@ -9,3 +11,8 @@ class DataSet():
 
     def load_numpy_array_from_file(self, path):
         return numpy.fromfile("assets/"+path, dtype='B')
+
+    def get_training_image_array(self, image_count : int):
+        image_start = 8 + image_count * IMAGE_WIDTH*IMAGE_WIDTH
+        image_end = image_start + IMAGE_WIDTH*IMAGE_WIDTH
+        return self.training_data[image_start:image_end]
