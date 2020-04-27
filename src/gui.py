@@ -57,7 +57,6 @@ class MainWindow(QWidget):
 
         # Image display
         self.image_label = QLabel(self)
-        #image_label.resize(200, 200)
         left_panel_layout.addWidget(self.image_label)
         
         # Image controls
@@ -83,7 +82,7 @@ class MainWindow(QWidget):
         number_font = QFont()
         number_font.setPointSize(40)
         number_font.setBold(True)
-        # Dataset number label
+        # Dataset number (Actual) label
         self.dataset_label = QLabel()
         self.dataset_label.setAlignment(Qt.AlignHCenter)
         self.dataset_label.setStyleSheet("QLabel { color : green; }")
@@ -258,7 +257,6 @@ class MainWindow(QWidget):
         """ Function for allowing all images from MNIST to be picked for the Left Panel viewer, signal for show_all_radiobutton"""
         self.current_dataset_image = 0
         self.image_indices = range(config.TRAINING_SET_IMAGE_COUNT)
-        #self.updateDatasetImage()
 
     def filterAllowOnlyIncorrectImages(self):
         """ Function for allowing only incorrectly recognized images from MNIST for the Left Panel viewer, signal for show_only_incorrect_radiobutton"""
@@ -284,10 +282,9 @@ class MainWindow(QWidget):
             nn_pixmap = QPixmap.fromImage(nn_q_image)
             self.nn_image_label.setPixmap(nn_pixmap)
 
-    def updateTrainingProgressCounter(self, progress):
+    def updateTrainingProgressCounter(self, progress: float):
         """ Updates the Progress Bar for Training in the right hand panel. It is sent as a function to the NN for automatic updating"""
         self.progressBar.setValue(progress*100)
-        #self.updateNeuralNetworkImage()
 
     def trainNeuralNetwork(self):
         """ Train the Neural Network using the parameters specified in the right panel on the MNIST dataset, see main.py for more details """

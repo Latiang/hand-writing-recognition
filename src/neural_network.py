@@ -4,7 +4,7 @@ import random
 from typing import *
 
 def print_training_progress(percentage_complete):
-    print("The training progress is at {:.2f} %".format(percentage_complete))
+    print("The training progress is at {:.2f} %".format(percentage_complete*100))
 
 class ActivationFunction:
     def __init__(self, function, derivative):

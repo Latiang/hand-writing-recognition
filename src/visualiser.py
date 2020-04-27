@@ -1,3 +1,5 @@
+""" Helper to create various images related to the Neural Network """
+
 from PIL import Image, ImageDraw, ImageFont
 from PyQt5.QtGui import QImage
 
@@ -19,16 +21,19 @@ def create_neural_network_image(neural_network: neural_network.NeuralNetwork, si
     image = Image.new('RGB', (new_size,new_size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(image)
 
+    #Setup neuron circle spacing variables
     x_margin = 20
     y_margin = 20
 
     x_spacing = (new_size-x_margin*2)/len(neural_network._size)
     x_value = x_margin + x_spacing/2
     neurons = []
+    # We can only display the activation if the activation is initiated
     display_activation = False
     if len(neural_network._activation) == len(neural_network._size):
         if not isinstance(neural_network._activation[0], int):
             display_activation = True
+    # Go through every neuron, calculate the spacing and add it to the list neurons
     for layer, neuron_layer_count in enumerate(neural_network._size):
         neurons.append([])
         y_spacing = (new_size-y_margin*2)/neuron_layer_count
@@ -44,6 +49,8 @@ def create_neural_network_image(neural_network: neural_network.NeuralNetwork, si
             y_value += y_spacing
         x_value += x_spacing
 
+    # Draw Neural Net Connections, with a maximum per layer set in config.py
+    # This is drawn before the circles so that the circles are drawn ontop the lines
     if config.DRAW_NEURALNET_CONNECTIONS:
         for layer_count, neuron_layer in enumerate(neurons[:-1]):
             random.shuffle(neuron_layer)
@@ -59,6 +66,7 @@ def create_neural_network_image(neural_network: neural_network.NeuralNetwork, si
 
     font = ImageFont.truetype("assets/ARIALBD.TTF", 30)  
 
+    # Draw the Neurons as circles (ellipses).
     for neuron_layer in neurons:
         for neuron in neuron_layer:
             draw.ellipse((neuron[0], neuron[1], neuron[0]+neuron[2], neuron[1]+neuron[2]), fill = 'gray', outline ='gray')
@@ -73,7 +81,7 @@ def create_neural_network_image(neural_network: neural_network.NeuralNetwork, si
                 #elif len(neuron[3]) == 2:
                 draw.text((neuron[0]+neuron[2]/2 - 20, neuron[1]+neuron[2]/2 - 20), str(neuron[3]), font=font)
 
-
+    # Resize oversized image back to get antialiasing
     image = image.resize((size, size),resample=Image.ANTIALIAS)
 
     return QImage(image.tobytes("raw","RGB"), image.size[0], image.size[1], QImage.Format_RGB888)
