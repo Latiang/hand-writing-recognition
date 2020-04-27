@@ -32,7 +32,7 @@ class MainWindow(QWidget):
 
         # Setup Window properties
         self.setWindowTitle('Hand-written Digit (MNIST) Recognition through Machine Learning')
-        self.setFixedSize(820, 590)
+        self.setFixedSize(825, 590)
         self.setStyleSheet("background-color: #181818; color: white")
 
         self.main_layout = QHBoxLayout()
@@ -143,6 +143,8 @@ class MainWindow(QWidget):
         self.nn_image_label = QLabel(self)
         self.updateNeuralNetworkImage()
         right_panel_layout.addWidget(self.nn_image_label)
+        self.testCurrentImage()
+        self.updateNeuralNetworkImage()
 
         # Train button
         network_related_layout = QHBoxLayout()
@@ -150,8 +152,6 @@ class MainWindow(QWidget):
 
         training_settings_layout = QVBoxLayout()
         training_settings_layout.setAlignment(Qt.AlignBottom)
-        training_settings2_layout = QVBoxLayout()
-        training_settings2_layout.setAlignment(Qt.AlignBottom)
 
         training_info_layout = QVBoxLayout()
         training_info_layout.setAlignment(Qt.AlignBottom)
@@ -180,38 +180,54 @@ class MainWindow(QWidget):
         self.progressBar.setGeometry(30, 40, 100, 25)
         training_info_layout.addWidget(self.progressBar)
 
+        # Divider line between the train and input section of the right panel
+        separator_line = QFrame()
+        separator_line.setFrameShape(QFrame.VLine)
+        separator_line.setStyleSheet("QFrame { color : #535353; }")
+        separator_line.setLineWidth(2)
+
         # Hidden Neuron Layer input
-        neurons_label = QLabel("Neurons:")
-        training_settings2_layout.addWidget(neurons_label)
+        neurons_input_layout = QHBoxLayout()
+        neurons_label = QLabel("Neurons")
+        #training_settings2_layout.addWidget(neurons_label)
         self.neurons_input = QSpinBox()
         self.neurons_input.setMaximum(1000)
         self.neurons_input.setValue(self.neural_network._size[1])
         self.neurons_input.valueChanged.connect(lambda x: self.updateNeuralNetworkSize())
-        training_settings2_layout.addWidget(self.neurons_input)
+        neurons_input_layout.addWidget(neurons_label)
+        neurons_input_layout.addWidget(self.neurons_input)
+        training_settings_layout.addLayout(neurons_input_layout)
 
         # Epoch input
-        epoch_label = QLabel("Epochs:")
-        training_settings_layout.addWidget(epoch_label)
+        epoch_input_layout = QHBoxLayout()
+        epoch_label = QLabel("Epochs")
         self.epoch_input = QSpinBox()
         self.epoch_input.setValue(1)
-        training_settings_layout.addWidget(self.epoch_input)
+        epoch_input_layout.addWidget(epoch_label)
+        epoch_input_layout.addWidget(self.epoch_input)
+        training_settings_layout.addLayout(epoch_input_layout)
 
         # Batches input
-        batches_label = QLabel("Batches:")
-        training_settings_layout.addWidget(batches_label)
+        batches_input_layout = QHBoxLayout()
+        batches_label = QLabel("Batches")
         self.batches_input = QSpinBox()
-        training_settings_layout.addWidget(self.batches_input)
+        batches_input_layout.addWidget(batches_label)
+        batches_input_layout.addWidget(self.batches_input)
+        training_settings_layout.addLayout(batches_input_layout)
 
         # Learning Rate input
-        learning_rate_label = QLabel("Learning Rate:")
-        training_settings_layout.addWidget(learning_rate_label)
+        learning_rate_input_layout = QHBoxLayout()
+        learning_rate_label = QLabel("Learning Rate")
         self.learning_rate_input = QDoubleSpinBox()
         self.learning_rate_input.setDecimals(4)
-        self.learning_rate_input.setValue(0.01)
-        training_settings_layout.addWidget(self.learning_rate_input)
+        self.learning_rate_input.setValue(0.001)
+        learning_rate_input_layout.addWidget(learning_rate_label)
+        learning_rate_input_layout.addWidget(self.learning_rate_input)
+        training_settings_layout.addLayout(learning_rate_input_layout)
 
+        # Add all the sub layouts together
         network_related_layout.addLayout(training_info_layout)
-        network_related_layout.addLayout(training_settings2_layout)
+        network_related_layout.addWidget(separator_line)
         network_related_layout.addLayout(training_settings_layout)
         right_panel_layout.addLayout(network_related_layout)
 
@@ -290,7 +306,7 @@ class MainWindow(QWidget):
     def testAllImages(self):
         """ Test the Neural Network on the MNIST test dataset and update relevant label fields, see main.py for more details """
         success_rate, self.image_incorrect_indices = main.test_model_MNIST(self.neural_network, self.dataset)
-        success_rate_string = "Accuracy: {:.3f} %".format(success_rate * 100)
+        success_rate_string = "Accuracy: {:.2f} %".format(success_rate * 100)
         self.average_error_number.setText("Avg. Error: {:.3f}".format(self.average_error))
         self.success_rate_number.setText(success_rate_string)
 
