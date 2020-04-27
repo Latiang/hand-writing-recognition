@@ -4,6 +4,6 @@ It has a simple visual interface using PyQT5. The Open Source MNIST library is i
 
 ## Dependencies (Python 3):  
 **Numpy** - for fast Python arrays and math `pip3 install numpy`  
-**Pillow** - Image handling `pip3 install numpy` 
+**Pillow** - Image handling `pip3 install numpy`  
 **PyQT5** - GUI library `pip install PyQt5`
 
