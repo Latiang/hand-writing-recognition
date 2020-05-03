@@ -16,8 +16,13 @@ def main():
 
     if config.GUI_ENABLED:
         application = gui.MainApplication(dataset, nn)
-
-    train_model_MNIST(nn, dataset, 0.01, 1, 1)
+    batchsize = 100
+    learning_rate = 0.01
+    epochs = 30
+    print(epochs, "epochs")
+    print(batchsize, "batchsize")
+    print(learning_rate, "learning rate")
+    train_model_MNIST(nn, dataset, learning_rate, epochs, batchsize)
     test_model_MNIST(nn, dataset)
 
     print("Program exited")

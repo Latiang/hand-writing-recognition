@@ -3,6 +3,8 @@ import numpy as np
 import random
 from typing import *
 
+#np.random.seed(234878734) #for testing purposes
+
 def print_training_progress(percentage_complete):
     print("The training progress is at {:.2f} %".format(percentage_complete*100))
 
@@ -108,7 +110,7 @@ class NeuralNetwork:
         done = 0
         batches = 0
         for _j in range(epochs):
-            random.shuffle(cases)
+            np.random.shuffle(cases)
             cost_sum = 0
             for case in cases:
                 batches += 1
