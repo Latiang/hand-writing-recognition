@@ -1,6 +1,10 @@
 import numpy as np
+
 import random
 from typing import *
+
+def print_training_progress(percentage_complete):
+    print("The training progress is at {:.2f} %".format(percentage_complete*100))
 
 class ActivationFunction:
     def __init__(self, function, derivative):
@@ -66,10 +70,10 @@ class NeuralNetwork:
             self._layers[i - 1] = self._layers[i - 1] - training_rate * p_times_derivative @ self._activation[i - 1].transpose()
             pcurr = pnext
 
-    def train(self, cases: List[Tuple[np.array, np.array]], training_rate: float, trials: int):
+    def train(self, cases: List[Tuple[np.array, np.array]], training_rate: float, trials: int, progress_update_function=print_training_progress):
         """Perform backpropagation on the given cases"""
         total_num = trials * len(cases)
-        speak = 0.1
+        update_progess_threshold = 0.05
         done = 0
         for _j in range(trials):
             random.shuffle(cases)
@@ -82,11 +86,13 @@ class NeuralNetwork:
                 cost_sum += sum(error * error)
                 self._backpropagate(error, training_rate)
                 done += 1
-                if done / total_num >= speak:
-                    print("Done ", done, " out of ", total_num)
-                    speak += 0.1
+                if done / total_num >= update_progess_threshold:
+                    percentage_complete = done/total_num
+                    progress_update_function(percentage_complete)
+                    update_progess_threshold += 0.05
         print("Total error: ", cost_sum)
         print("Average error: ", cost_sum / total_num)
+        return (cost_sum / total_num)[0]
 
 def test():
     cases = [([0, 0], [0]), ([0, 1], [1]), ([1, 0], [1]), ([1, 1], [0])]
@@ -95,7 +101,6 @@ def test():
 
     nn = NeuralNetwork([2, 784, 1])
     nn.train(cases, 0.1, 100000)
-
 
 if __name__ == "__main__":
     test()
