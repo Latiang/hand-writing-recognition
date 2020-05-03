@@ -17,12 +17,12 @@ def main():
     if config.GUI_ENABLED:
         application = gui.MainApplication(dataset, nn)
 
-    train_model_MNIST(nn, dataset)
+    train_model_MNIST(nn, dataset, 0.01, 5, 1)
     test_model_MNIST(nn, dataset)
 
     print("Program exited")
 
-def train_model_MNIST(model, dataset, learning_rate=0.01, epochs=1, status_function=neural_network.print_training_progress):
+def train_model_MNIST(model, dataset, learning_rate=0.01, epochs=1, batch_size = 1, status_function=neural_network.print_training_progress):
     """ Train a Neural Network Model on the MNIST Training Dataset. Returns the Average Error """
     print("Training Neural Network on MNIST Dataset")
     training_data = []
@@ -33,8 +33,8 @@ def train_model_MNIST(model, dataset, learning_rate=0.01, epochs=1, status_funct
             (dataset.get_training_image_array(i).reshape([784, 1])
             , expected)
             )
-    avg_error = model.train(training_data, 0.01, 1, status_function)
-    avg_error = model.train(training_data, learning_rate, epochs, status_function)
+    #avg_error = model.train(training_data, 0.01, 1, status_function)
+    avg_error = model.train(training_data, learning_rate, epochs, batch_size, status_function)
     return avg_error
 
 def test_model_MNIST(model : neural_network.NeuralNetwork, dataset) -> (float, list):
