@@ -17,7 +17,7 @@ def main():
     test_label = dataset.get_test_image_label(0)
 
     #visualiser.display_image(test_image, test_label)
-    nn = neural_network.NeuralNetwork([784, 784, 10])
+    nn = neural_network.NeuralNetwork([784, 100, 10])
     train_model_MNIST(nn)
     test_model_MNIST(nn)
 
@@ -35,6 +35,8 @@ def train_model_MNIST(model):
             , expected)
             )
     model.train(training_data, 0.01, 1)
+    #model.train(training_data, 0.01, 1)
+    model.train(training_data, 0.001, 1)
 
 
 def test_model_MNIST(model):

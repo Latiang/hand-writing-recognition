@@ -8,15 +8,27 @@ class ActivationFunction:
         self.derivative = derivative
 
 
-def sigmoid(x):
+def _rectified_linear(x):
+    return np.maximum(0, x)
+
+
+def _rectified_linear_prim(x):
+    return (x > 0) * 1.0
+
+
+def _sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-def sigmoid_prim(x):
-    y = sigmoid(x)
+def _sigmoid_prim(x):
+    y = _sigmoid(x)
     return y * (1 - y)
 
+SIGMOID = ActivationFunction(_sigmoid, _sigmoid_prim)
+ReLU = ActivationFunction(_rectified_linear, _rectified_linear_prim)
+
+
 class NeuralNetwork:
-    def __init__(self, size: List[int], activation_function: ActivationFunction = ActivationFunction(sigmoid, sigmoid_prim)):
+    def __init__(self, size: List[int], activation_function: ActivationFunction = SIGMOID):
         self._layers = []
         self._sum = [0] * (len(size))
         self._activation = [0] * (len(size))
