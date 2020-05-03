@@ -79,8 +79,9 @@ class NeuralNetwork:
 
         pcurr = pnext
         for i in range(len(self._activation) - 2, 0, -1):
-            #pcurr[-1] = 0       #The derivative with respect to the last value is 0 because it is locked to 1
+            pcurr[-1] = 0       #The derivative with respect to the last value is 0 because it is locked to 1
                                 #This change will probably not affect much but we try to see if it makes any difference
+                                # Tests seems to indicate that there is no advantage nor any disadvantage with it being set to 0 or not
             p_times_derivative = pcurr * self._activation_function.derivative(self._sum[i])
             pnext = self._layers[i - 1].transpose() @ p_times_derivative
 
