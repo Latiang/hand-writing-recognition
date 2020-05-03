@@ -61,7 +61,7 @@ class NeuralNetwork:
             self._activation[i][-1] = 1
         current = self._layers[-1] @ current
         self._sum[-1] = current
-        self._activation[-1] = self._activation_function.function(current)
+        self._activation[-1] = _sigmoid(current)
 
 
     def size(self):
@@ -72,14 +72,14 @@ class NeuralNetwork:
         """performs backprogation given a error"""
         pcurr = err
 
-        p_times_derivative = pcurr * self._activation_function.derivative(self._sum[-1])
+        p_times_derivative = pcurr * _sigmoid_prim(self._sum[-1])
         pnext = self._layers[-1].transpose() @ p_times_derivative
 
         self._gradient[-1] = self._gradient[-1] + p_times_derivative @ self._activation[-2].transpose()
 
         pcurr = pnext
         for i in range(len(self._activation) - 2, 0, -1):
-            pcurr[-1] = 0       #The derivative with respect to the last value is 0 because it is locked to 1
+            #pcurr[-1] = 0       #The derivative with respect to the last value is 0 because it is locked to 1
                                 #This change will probably not affect much but we try to see if it makes any difference
             p_times_derivative = pcurr * self._activation_function.derivative(self._sum[i])
             pnext = self._layers[i - 1].transpose() @ p_times_derivative

@@ -17,7 +17,7 @@ def main():
     if config.GUI_ENABLED:
         application = gui.MainApplication(dataset, nn)
 
-    train_model_MNIST(nn, dataset, 0.01, 5, 1)
+    train_model_MNIST(nn, dataset, 0.01, 1, 1)
     test_model_MNIST(nn, dataset)
 
     print("Program exited")
