@@ -32,7 +32,7 @@ class MainWindow(QWidget):
 
         # Setup Window properties
         self.setWindowTitle('Hand-written Digit (MNIST) Recognition through Machine Learning')
-        self.setFixedSize(825, 590)
+        self.setFixedSize(1100, 600)
         self.setStyleSheet("background-color: #181818; color: white")
 
         self.main_layout = QHBoxLayout()
@@ -141,6 +141,7 @@ class MainWindow(QWidget):
         # Neural Network Image Display
         self.nn_image_label = QLabel(self)
         self.updateNeuralNetworkImage()
+        self.nn_image_label.setAlignment(Qt.AlignCenter)
         right_panel_layout.addWidget(self.nn_image_label)
         self.testCurrentImage()
         self.updateNeuralNetworkImage()
@@ -210,6 +211,7 @@ class MainWindow(QWidget):
         batches_input_layout = QHBoxLayout()
         batches_label = QLabel("Batches")
         self.batches_input = QSpinBox()
+        self.batches_input.setValue(1)
         batches_input_layout.addWidget(batches_label)
         batches_input_layout.addWidget(self.batches_input)
         training_settings_layout.addLayout(batches_input_layout)
@@ -289,7 +291,7 @@ class MainWindow(QWidget):
     def trainNeuralNetwork(self):
         """ Train the Neural Network using the parameters specified in the right panel on the MNIST dataset, see main.py for more details """
         self.updateTrainingProgressCounter(0)
-        self.average_error = main.train_model_MNIST(self.neural_network, self.dataset, float(self.learning_rate_input.value()), int(self.epoch_input.value()), self.updateTrainingProgressCounter)
+        self.average_error = main.train_model_MNIST(self.neural_network, self.dataset, float(self.learning_rate_input.value()), int(self.epoch_input.value()), int(self.batches_input.value()), self.updateTrainingProgressCounter)
         self.updateTrainingProgressCounter(1)
         self.testAllImages()
         self.updateNeuralNetworkImage()
